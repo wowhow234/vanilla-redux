@@ -1,8 +1,10 @@
 import React from "react";
 import { useState } from "react";
 import { connect } from "react-redux";
+import { actionCreators } from "../store";
+import Todo from "../components/Todo";
 
-const Home = ({ toDos }) => {
+const Home = ({ toDos, dAddToDo }) => {
   const [text, setText] = useState("");
 
   const onChange = (e) => {
@@ -10,10 +12,12 @@ const Home = ({ toDos }) => {
   };
 
   const onSubmit = (e) => {
+    console.log("submit 후 toDos?? ---->", toDos);
     e.preventDefault();
+    dAddToDo(text);
     setText("");
-    console.log("텍스트---", text);
   };
+
   return (
     <div>
       <h1>To Do 홈</h1>
@@ -21,15 +25,24 @@ const Home = ({ toDos }) => {
         <input type="text" value={text} onChange={onChange} />
         <button>추가하기</button>
       </form>
-      <ul>{JSON.stringify(toDos)}</ul>
+      <ul>
+        {toDos.map((toDo) => (
+          <Todo {...toDo} key={toDo.id} />
+        ))}
+      </ul>
     </div>
   );
 };
 
-const getCurrentState = (state) => {
+const mapStateToProps = (state) => {
+  console.log("현재 state....", state);
   return {
     toDos: state,
   };
 };
 
-export default connect(getCurrentState)(Home);
+function mapDispatchToProps(dispatch) {
+  return { dAddToDo: (text) => dispatch(actionCreators.addTodo(text)) };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);
