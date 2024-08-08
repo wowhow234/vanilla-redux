@@ -38,21 +38,19 @@ const deleteTodo = createAction("DELETE", (id) => {
 const reducer = createReducer([], (builder) => {
   builder
     .addCase(addTodo, (state, action) => {
-      const setItem = state.push({
+      state.push({
         text: action.payload.text,
         id: action.payload.id,
       });
-      localStorage.setItem("todo", JSON.stringify([setItem, ...state]));
-      // console.log("acton text----", action);
-      // console.log("state---------", state);
+      localStorage.setItem("todo", JSON.stringify(state));
       console.log("로컬스토리지..", localStorage.getItem("todo"));
-      // JSON.parse(localStorage.getItem("todo"));
-      console.log("로컬스토리지..", JSON.parse(localStorage.getItem("todo")));
-      // 이렇게 까지 했는데 왜 로컬스토리지에 0 부터 입력이 되지..?
+      JSON.parse(localStorage.getItem("todo")); // 이거 없어도 작동 되는데 why..?
     })
-    .addCase(deleteTodo, (state, action) =>
-      state.filter((toDo) => toDo.id !== action.payload.id)
-    );
+    .addCase(deleteTodo, (state, action) => {
+      const deleteItem = state.filter((toDo) => toDo.id !== action.payload.id);
+      localStorage.setItem("todo", JSON.stringify(deleteItem));
+      return JSON.parse(localStorage.getItem("todo"));
+    });
 });
 
 const store = legacy_createStore(reducer);
