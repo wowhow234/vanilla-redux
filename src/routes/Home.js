@@ -12,7 +12,7 @@ const Home = ({ toDos, dAddToDo }) => {
   };
 
   const onSubmit = (e) => {
-    console.log("submit 후 toDos?? ---->", toDos);
+    // console.log("submit 후 toDos?? ---->", toDos);
     e.preventDefault();
     dAddToDo(text);
     setText("");
