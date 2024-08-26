@@ -86,8 +86,13 @@ const toDos = createSlice({
       },
     },
     removeTodo: (state, action) => {
-      const deleteItem = state.filter((toDo) => toDo.id !== action.payload.id);
+      const deleteItem = state.filter((toDo) => toDo.id !== action.payload);
       localStorage.setItem("todo", JSON.stringify(deleteItem));
+      console.log("removeTodo action----->", action);
+      console.log("deleteItem : ", deleteItem);
+      console.log("toDo.id---", state[0].id);
+      console.log("action.payload.id---", action.payload);
+
       return JSON.parse(localStorage.getItem("todo"));
     },
   },
